@@ -6,7 +6,7 @@ The user first sets the desired start-point, end-point, as well as barriers. Usi
 Turquoise square: starting point\
 Orange square: ending point\
 Black squares: barriers\
-Green squares: shortest path\
+Green squares: shortest path
 
 
 I built this using Pygame, and will most likely be making more improvements in the future besides basic functionality. 
