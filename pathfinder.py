@@ -110,64 +110,69 @@ def get_clicked_pos(pos, rows, width):
 
 
 def astar_algorithm(start, end, grid):
-    endrow, endcol = end.get_pos()
-
     open_list = [start]
     closed_list = []
     current_spot = start
-    fvalues = [start.f]
+    begin_loop(open_list, closed_list, current_spot, start, end, grid)
 
-    while True:
-        if current_spot != end:
-            neighbours = current_spot.update_neighbours(grid)
+def begin_loop(open_list, closed_list, current_spot, start, end, grid):
+    endrow, endcol = end.get_pos()
 
-            for spot in neighbours:
-                if spot.is_barrier() is False:
-                    spotrow, spotcol = spot.get_pos()
-                    
-                    if spot in open_list:
-                        if spot.g < current_spot.g + 1:
-                            continue
-                        else:
-                            open_list.remove(spot)
-                            if spot != end:
-                                spot.reset()
+    if current_spot != end:
+        neighbours = current_spot.update_neighbours(grid)
 
-                    if spot in closed_list:
-                        if spot.g < current_spot.g + 1:
-                            continue
-                        else:
-                            closed_list.remove(spot)
-                            if spot != end:
-                                spot.reset()
-
-                    if spot not in open_list and spot not in closed_list:
-                        spot.g = current_spot.g + 1
-                        spot.h = (abs(endrow - spotrow)) + (abs(endcol - spotcol))
-                        spot.f = spot.g + spot.h
-                        spot.set_parent(current_spot)
-                        if spot != start and spot != end:
-                            spot.make_open()
-                        open_list.append(spot)
-                        
-                else:
-                    continue
+        for spot in neighbours:
+            if spot.is_barrier() is False:
+                spotrow, spotcol = spot.get_pos()
                 
-            f_values = []
-            for each in open_list:
-                f_values.append(each.f)
+                if spot in open_list:
+                    if spot.g < current_spot.g + 1:
+                        continue
+                    else:
+                        open_list.remove(spot)
+                        if spot != end:
+                            spot.reset()
 
-            index = f_values.index(min(f_values))
-            current_spot = open_list[index]
-            open_list.remove(current_spot)
-            closed_list.append(current_spot)
-            if current_spot != start and current_spot != end:
-                current_spot.make_closed()
-            pygame.display.flip()
+                if spot in closed_list:
+                    if spot.g < current_spot.g + 1:
+                        continue
+                    else:
+                        closed_list.remove(spot)
+                        if spot != end:
+                            spot.reset()
 
-        else:
-            break
+                if spot not in open_list and spot not in closed_list:
+                    spot.g = current_spot.g + 1
+                    spot.h = (abs(endrow - spotrow)) + (abs(endcol - spotcol))
+                    spot.f = spot.g + spot.h
+                    spot.set_parent(current_spot)
+                    if spot != start and spot != end:
+                        spot.make_open()
+                    open_list.append(spot)
+                    
+            else:
+                continue
 
+        f_values = []
+
+        for each in open_list:
+            f_values.append(each.f)
+
+        index = f_values.index(min(f_values))
+        current_spot = open_list[index]
+        open_list.remove(current_spot)
+        closed_list.append(current_spot)
+        if current_spot != start and current_spot != end:
+            current_spot.make_closed()
+        pygame.display.flip()
+    
+
+    else:
+        return construct_path(end, start)
+
+    return begin_loop(open_list, closed_list, current_spot, start, end, grid)
+            
+def construct_path(end, start):       
     current = end
     path = []
     
@@ -185,6 +190,7 @@ def main(display, width):
     gap = width // rows
     startpt = False
     endpt = False
+    clock = pygame.time.Clock()
 
     while True:
         draw(display, grid, rows, width)
@@ -222,6 +228,9 @@ def main(display, width):
             if event.type == pygame.KEYDOWN:
                 if event.key == 13:
                     astar_algorithm(start, end, grid)
+
+        pygame.display.update()
+        clock.tick(20)
                     
 
 if __name__ == '__main__': main(display, displaywidth)
