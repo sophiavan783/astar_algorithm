@@ -8,8 +8,8 @@ I will most likely be making more improvements in the future besides basic funct
 ![Image of A* example](astar_example.PNG)
 
 
-Turquoise square: starting point\
-Orange square: ending point\
+Orange square: starting point\
+Turquoise square: ending point\
 Black squares: barriers\
 Green squares: shortest path
 
