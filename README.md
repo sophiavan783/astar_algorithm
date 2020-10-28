@@ -5,7 +5,7 @@ The user first sets the desired start-point, end-point, as well as barriers. Usi
 I will most likely be making more improvements in the future besides basic functionality!
 
 
-![Image of A* example](astar_example.JPG)
+![Image of A* example](astar_example.PNG)
 Turquoise square: starting point\
 Orange square: ending point\
 Black squares: barriers\
